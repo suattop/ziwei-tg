@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Telegram Mini Apps Vanilla JS Sample App</title>
+    <title>Ziwei Dev Bot</title>
     <style>
         body {
             --bg-color: var(--tg-theme-bg-color);
@@ -87,6 +87,37 @@
         <h1>Buttons</h1>
         <button onclick="Telegram.WebApp.expand();">Expand Webview</button>
         <button onclick="toggleMainButton();">Toggle Main Button</button>
+
+        <h1>User Input Form</h1>
+        <form id="inputForm">
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" required><br>
+
+            <label for="month">Month:</label>
+            <input type="number" id="month" name="month" required><br>
+
+            <label for="day">Day:</label>
+            <input type="number" id="day" name="day" required><br>
+
+            <label for="hour">Hour:</label>
+            <input type="number" id="hour" name="hour" required><br>
+
+            <label for="minute">Minute:</label>
+            <input type="number" id="minute" name="minute" required><br>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select><br>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+        <div id="result">
+            <div id="loading" style="display: none;">Loading...</div>
+            <div id="response"></div>
+        </div>
     </main>
     <div id="viewport"></div>
     <div id="viewport-params-size"></div>
@@ -153,6 +184,42 @@
             document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
         });
 
+        // Handle form submission and API request
+        const form = document.getElementById('inputForm');
+        const loadingDiv = document.getElementById('loading');
+        const responseDiv = document.getElementById('response');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const year = formData.get('year');
+            const month = formData.get('month');
+            const day = formData.get('day');
+            const hour = formData.get('hour');
+            const minute = formData.get('minute');
+            const gender = formData.get('gender');
+
+            const prompt = "假設你是一個紫微斗數解讀師及心理學家，用多些口語，在不提及紫微斗數專業術語的情況下以3000個中文字以'你是一個'為開頭詳細描寫一下我的性格、能力、事業、理想、優點及缺點";
+            const city = "Hong Kong";
+            const model = "mistral-large-2402";
+
+            const apiUrl = `http://api.ziwei.dev/api/v1/analysis?year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&gender=${gender}&prompt=${encodeURIComponent(prompt)}&city=${city}&model=${model}`;
+
+            loadingDiv.style.display = 'block';
+            responseDiv.textContent = '';
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                loadingDiv.style.display = 'none';
+                responseDiv.textContent = data.final;
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                responseDiv.textContent = 'An error occurred while fetching the data.';
+                console.error('Error:', error);
+            }
+        });
     </script>
 
     <!-- Eruda is console for mobile browsers -->
