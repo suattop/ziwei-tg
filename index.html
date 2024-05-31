@@ -204,7 +204,7 @@
             const city = "Hong Kong";
             const model = "mistral-large-2402";
 
-            const apiUrl = `http://api.ziwei.dev/api/v1/analysis?year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&gender=${gender}&prompt=${encodeURIComponent(prompt)}&city=${city}&model=${model}`;
+            const apiUrl = `https://api.ziwei.dev/api/v1/analysis?year=${year}&month=${month}&day=${day}&hour=${hour}&minute=${minute}&gender=${gender}&prompt=${encodeURIComponent(prompt)}&city=${city}&model=${model}`;
 
             loadingDiv.style.display = 'block';
             responseDiv.textContent = '';
