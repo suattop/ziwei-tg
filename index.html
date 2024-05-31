@@ -67,28 +67,8 @@
         <div align="center">
             <a href="https://ton.org/"><img width="48" src="./assets/tapps.png" alt="logo of telegram web apps"></a>
         </div>
-        <h1>Modals</h1>
-        <button onclick="Telegram.WebApp.showAlert('Hello World!');">Launch Alert</button>
-        <button onclick="showPopup();">Launch Popup</button>
-
-        <h1>Links</h1>
-        <ul>
-            <li>
-                <a href="javascript:Telegram.WebApp.openTelegramLink('https://t.me/trendingapps');">Open link within Telegram</a>
-            </li>
-            <li>
-                <a href="javascript:Telegram.WebApp.openLink('https://ton.org/');">Open link in external browser</a>
-            </li>
-            <li>
-                <a href="javascript:Telegram.WebApp.openLink('https://telegra.ph/api',{try_instant_view:true});">Open link inside Telegram webview</a>
-            </li>
-        </ul>
-
-        <h1>Buttons</h1>
-        <button onclick="Telegram.WebApp.expand();">Expand Webview</button>
-        <button onclick="toggleMainButton();">Toggle Main Button</button>
-
-        <h1>User Input Form</h1>
+    
+        <h1>輸入出生日期時間</h1>
         <form id="inputForm">
             <label for="year">Year:</label>
             <input type="number" id="year" name="year" required><br>
@@ -212,25 +192,14 @@
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                showPopup(data.final);
+                loadingDiv.style.display = 'none';
+                responseDiv.textContent = data.final;
             } catch (error) {
                 loadingDiv.style.display = 'none';
                 responseDiv.textContent = 'An error occurred while fetching the data.';
                 console.error('API Fetch Error:', error);
             }
         });
-
-        function showPopup(message) {
-            Telegram.WebApp.showPopup({
-                title: 'Analysis Result',
-                message: message,
-                buttons: [
-                    {id: 'close', type: 'default', text: 'Close'},
-                ]
-            }, function() {
-                // No additional action needed for the close button
-            });
-        }
     </script>
 
     <!-- Eruda is console for mobile browsers -->
